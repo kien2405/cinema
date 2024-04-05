@@ -26,4 +26,5 @@ public class RoleEntity {
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     List<UserEntity> users;
+
 }

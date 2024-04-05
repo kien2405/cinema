@@ -1,5 +1,6 @@
 package com.example.cinema.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -59,4 +60,5 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "customerId", fetch = FetchType.LAZY)
     List<BillEntity> bills;
+
 }
