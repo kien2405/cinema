@@ -1,79 +1,70 @@
-package com.example.cinema.config;
+package com.example.ThucTapLTS.config;
 
-
-import com.example.cinema.enums.Role;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.ThucTapLTS.filter.JwtFilter;
+import com.example.ThucTapLTS.provider.CustomAuthenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-
-import javax.crypto.spec.SecretKeySpec;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class SecurityConfig {
-    private static final String[] PUBLIC_ENDPOINTS = {"/user/createUser",
-            "/auth/token",
-            "/auth/introspect",
-            "/mail/sendMail",
-            "/user/verifyUser",
-            "/user/forgetPassword"};
 
-    @Value("${jwt.signerKey}")
-    private String signerKey;
-
+    //  Khai báo chuẩn mã hóa Bcrypt và lưu trữ trên IOC
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-//                        .requestMatchers(HttpMethod.GET, "").hasRole(Role.ADMIN.name())
-                        .anyRequest().authenticated());
-
-
-        httpSecurity.oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter()))
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-        );
-
-        httpSecurity.csrf(csrf -> csrf.disable());
-        return httpSecurity.build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    JwtAuthenticationConverter jwtAuthenticationConverter() {
-        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+    @Autowired
+    private CustomAuthenProvider authenticationProvider;
 
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-        return jwtAuthenticationConverter;
-    }
-
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
-    JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
-        return NimbusJwtDecoder.withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS512)
+    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
+                .authenticationProvider(authenticationProvider)
                 .build();
     }
 
+    //  Đây là filter dùng để custom rule liên quan tới link hoặc cấu hình security
+    //  Java 8,11 : antMatchers
+    //  Java 17~ : requestAntmatchers
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(10);
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.cors().and().csrf().disable()
+                // Tắt cấu hình liên quan tới tấn công CSRF
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //  Khai báo không sử dụng session trong project
+                .and()
+                .authorizeHttpRequests()   // Quy định lại các role liên quan tới chứng thực cho link được gọi
+                .requestMatchers("/signin", "/signup", "/user/forgetPassword", "/user/activeUser", "/mail/**", "/payment").permitAll() // Cho phép tất cả mọi người truy cập các URL này mà không cần chứng thực
+                .requestMatchers("/cinema/crud/**").hasRole("ADMIN")
+                .requestMatchers("/food/get/foodSalesLast7Days").hasRole("ADMIN")
+                .requestMatchers("/cinema/get/cinemaSalesStatistics").hasRole("ADMIN")
+                .requestMatchers("/room/crud/**").hasRole("ADMIN")
+                .requestMatchers("/seat/crud/**").hasRole("ADMIN")
+                .requestMatchers("/food/crud/**").hasRole("ADMIN")
+                .requestMatchers("/movie/crud/**").hasRole("ADMIN")
+                .requestMatchers("/schedule/crud/**").hasRole("ADMIN")
+                .requestMatchers("/ticket/crud/**").hasRole("USER")
+                .requestMatchers("/bill/crud/**").hasRole("USER")
+                .requestMatchers("/api/user/UpdateUser").hasRole("USER")
+                .requestMatchers("/movie/get/**", "/schedule/get/**").hasAnyRole("USER", "ADMIN") // Cho phép người dùng có quyền USER hoặc ADMIN truy cập các URL bắt đầu bằng /user/
+                .anyRequest().authenticated() // Tất cả các request còn lại đều phải được chứng thực
+                .and()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
-
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận thanh toán</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Xác nhận thanh toán</h1>
+    <p>Cảm ơn bạn đã thực hiện thanh toán thành công. Đơn hàng của bạn đã được xác nhận.</p>
+    <p>Chi tiết thanh toán:</p>
+    <ul>
+        <p th:text="${'Mã đơn hàng: ' + vnp_TxnRef}"></p>
+        <p th:text="${'Số tiền: ' + vnp_Amount}"></p>
+    </ul>
+    <p>Nếu bạn có bất kỳ câu hỏi hoặc thắc mắc, vui lòng liên hệ với chúng tôi.</p>
+    <p>Xin chân thành cảm ơn,</p>
+    <p>[Tên của bạn hoặc tên công ty của bạn]</p>
+</div>
+<div class="footer">
+    <p>© 2024 Tất cả quyền được bảo lưu</p>
+</div>
+</body>
+</html>

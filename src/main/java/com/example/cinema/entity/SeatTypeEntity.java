@@ -1,27 +1,43 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 @Entity
-@Table(name = "SeatType")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "seat_type")
 public class SeatTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "NameType")
-    String nameType;
+    @Column(name = "name_type")
+    private String nameType;
 
-    @OneToMany(mappedBy = "seatType", fetch = FetchType.LAZY)
-    List<SeatEntity> seats;
+    @OneToMany(mappedBy = "seatTypeEntity")
+    List<SeatEntity> seatEntityList;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNameType() {
+        return nameType;
+    }
+
+    public void setNameType(String nameType) {
+        this.nameType = nameType;
+    }
+
+    public List<SeatEntity> getSeatEntityList() {
+        return seatEntityList;
+    }
+
+    public void setSeatEntityList(List<SeatEntity> seatEntityList) {
+        this.seatEntityList = seatEntityList;
+    }
 }

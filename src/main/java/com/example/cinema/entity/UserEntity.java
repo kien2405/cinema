@@ -1,64 +1,166 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.util.List;
 
 @Entity
-@Table(name = "User")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "user")
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Point")
-    Integer point;
+    @Column(name = "point")
+    private int point;
 
-    @Column(name = "Username")
-    String username;
+    @Column(name = "username")
+    private String username;
 
-    @Column(name = "Email")
-    String email;
+    @Column(name = "email")
+    private String email;
 
-    @Column(name = "Name")
-    String name;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "PhoneNumber")
-    String phoneNumber;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-    @Column(name = "Password")
-    String password;
+    @Column(name = "password")
+    private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "RankCustomerId")
-    RankCustomerEntity rankCustomer;
-
-    @ManyToOne
-    @JoinColumn(name = "UserStatusId")
-    UserStatusEntity userStatus;
-
-    @Column(name = "IsActive")
-    Boolean isActive;
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "RoleId")
-    RoleEntity role;
+    @JoinColumn(name = "rank_customer_id")
+    private RankCustomerEntity rankCustomerEntity;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<RefreshTokenEntity> refreshTokens;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity roleEntity;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    List<ConfirmEmailEntity> confirmEmails;
+    @ManyToOne
+    @JoinColumn(name = "user_status_id")
+    private UserStatusEntity userStatusEntity;
 
-    @OneToMany(mappedBy = "customerId", fetch = FetchType.LAZY)
-    List<BillEntity> bills;
+    @OneToMany(mappedBy = "userEntity")
+    List<BillEntity> billEntityList;
 
+    @OneToMany(mappedBy = "userEntity")
+    List<ConfirmEmailEntity> confirmEmailEntityList;
+
+    @OneToMany(mappedBy = "userEntity")
+    List<RefreshTokenEntity> refreshTokenEntityList;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public RankCustomerEntity getRankCustomerEntity() {
+        return rankCustomerEntity;
+    }
+
+    public void setRankCustomerEntity(RankCustomerEntity rankCustomerEntity) {
+        this.rankCustomerEntity = rankCustomerEntity;
+    }
+
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
+    }
+
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
+    }
+
+    public UserStatusEntity getUserStatusEntity() {
+        return userStatusEntity;
+    }
+
+    public void setUserStatusEntity(UserStatusEntity userStatusEntity) {
+        this.userStatusEntity = userStatusEntity;
+    }
+
+    public List<BillEntity> getBillEntityList() {
+        return billEntityList;
+    }
+
+    public void setBillEntityList(List<BillEntity> billEntityList) {
+        this.billEntityList = billEntityList;
+    }
+
+    public List<ConfirmEmailEntity> getConfirmEmailEntityList() {
+        return confirmEmailEntityList;
+    }
+
+    public void setConfirmEmailEntityList(List<ConfirmEmailEntity> confirmEmailEntityList) {
+        this.confirmEmailEntityList = confirmEmailEntityList;
+    }
+
+    public List<RefreshTokenEntity> getRefreshTokenEntityList() {
+        return refreshTokenEntityList;
+    }
+
+    public void setRefreshTokenEntityList(List<RefreshTokenEntity> refreshTokenEntityList) {
+        this.refreshTokenEntityList = refreshTokenEntityList;
+    }
 }

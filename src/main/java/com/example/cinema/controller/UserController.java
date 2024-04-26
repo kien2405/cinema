@@ -1,53 +1,55 @@
-package com.example.cinema.controller;
+package com.example.ThucTapLTS.controller;
 
-import com.example.cinema.dto.request.UserChangePasswordRequest;
-import com.example.cinema.dto.request.UserCreateRequest;
-import com.example.cinema.dto.request.UserForgetPasswordRequest;
-import com.example.cinema.dto.request.UserVerifyRequest;
-import com.example.cinema.dto.response.ApiResponse;
-import com.example.cinema.service.UserService;
-import jakarta.validation.Valid;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import com.example.ThucTapLTS.payload.request.ActiveUserRequest;
+import com.example.ThucTapLTS.payload.request.ChangePasswordRequest;
+import com.example.ThucTapLTS.payload.request.ForgetPasswordRequest;
+import com.example.ThucTapLTS.payload.response.BaseResponse;
+import com.example.ThucTapLTS.service.imp.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Slf4j
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImp userServiceImp;
 
-    @PostMapping("/createUser")
-    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request){
-        ApiResponse response = new ApiResponse<>();
-        response.setData(userService.createRequest(request));
+    @PostMapping("/activeUser")
+    public ResponseEntity<?> activeUser(@RequestBody ActiveUserRequest activeUserRequest) {
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(200);
+        response.setData(userServiceImp.activeUser(activeUserRequest));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/verifyUser")
-    public ResponseEntity<?> verifyUser(@RequestBody UserVerifyRequest request) {
-        ApiResponse response = new ApiResponse<>();
-        response.setData(userService.registerVerify(request));
-        return ResponseEntity.ok(response);
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(200);
+        userServiceImp.changePassword(changePasswordRequest);
+        response.setMessage("Đổi mật khẩu thành công");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/forgetPassword")
-    public ResponseEntity<?> forgetPassword(@RequestBody UserForgetPasswordRequest request) {
-        ApiResponse response = new ApiResponse<>();
-        userService.forgetPassword(request);
-        return ResponseEntity.ok(response);
+    @PostMapping("/forgetPassword")
+    public ResponseEntity<?> forgetPassword(@RequestBody ForgetPasswordRequest forgetPasswordRequest) {
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(200);
+        userServiceImp.forgetPassword(forgetPasswordRequest);
+        response.setMessage("Đổi mật khẩu thành công");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/changePassword")
-    public ResponseEntity<?> changePassword(@RequestBody UserChangePasswordRequest request) {
-        ApiResponse response = new ApiResponse<>();
-        userService.updatePassword(request);
-        return ResponseEntity.ok(response);
+    @GetMapping("/changeRole")
+    public ResponseEntity<?> changeRole(@RequestParam int idUser,
+                                        @RequestParam int idRole) {
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(200);
+        userServiceImp.changeRole(idUser, idRole);
+        response.setMessage("Đổi quyền thành công");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

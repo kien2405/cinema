@@ -1,30 +1,54 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 @Entity
-@Table(name = "Rate")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "rate")
 public class RateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Description")
-    String description;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "Code")
-    String code;
+    @Column(name = "code")
+    private String code;
 
-    @OneToMany(mappedBy = "rate", fetch = FetchType.LAZY)
-    List<MovieEntity> movies;
+    @OneToMany(mappedBy = "rateEntity")
+    private List<MovieEntity> movieEntityList;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public List<MovieEntity> getMovieEntityList() {
+        return movieEntityList;
+    }
+
+    public void setMovieEntityList(List<MovieEntity> movieEntityList) {
+        this.movieEntityList = movieEntityList;
+    }
 }
