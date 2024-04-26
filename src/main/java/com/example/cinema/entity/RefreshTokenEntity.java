@@ -1,30 +1,56 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "RefreshToken")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "refresh_token")
 public class RefreshTokenEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Token")
-    String token;
+    @Column(name = "token")
+    private String token;
 
-    @Column(name = "ExpiredTime")
-    Date expiredTime;
+    @Column(name = "expired_time")
+    private LocalDateTime expiredTime;
 
     @ManyToOne
-    @JoinColumn(name = "UserId")
-    UserEntity user;
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public LocalDateTime getExpiredTime() {
+        return expiredTime;
+    }
+
+    public void setExpiredTime(LocalDateTime expiredTime) {
+        this.expiredTime = expiredTime;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
 }

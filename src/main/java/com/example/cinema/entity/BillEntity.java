@@ -1,53 +1,149 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "Bill")
+@Table(name = "bill")
 public class BillEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Name")
-    String name;
+    @Column(name = "total_money")
+    private double totalMoney;
 
-    @Column(name = "TotalMoney")
-    Double totalMoney;
+    @Column(name = "trading_code")
+    private String tradingCode;
 
-    @Column(name = "TradingCode")
-    String tradingCode;
+    @Column(name = "create_time")
+    private LocalDateTime createTime;
 
-    @Column(name = "CreateTime")
-    Date createTime;
-    @ManyToOne
-    @JoinColumn(name = "CustomerId")
-    UserEntity customerId;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "UpdateTime")
-    Date updateTime;
+    @Column(name = "update_time")
+    private LocalDateTime updateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "PromotionId")
-    PromotionEntity promotion;
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "BillStatusId", nullable = false)
-    BillStatusEntity billStatus;
+    @JoinColumn(name = "customer_id")
+    private UserEntity userEntity;
 
-    @Column(name = "IsActive")
-    Boolean isActive;
+    @ManyToOne
+    @JoinColumn(name = "promotion_id")
+    private PromotionEntity promotionEntity;
 
-    @OneToMany(mappedBy = "bill", fetch = FetchType.LAZY)
-    List<BillFoodEntity> billFoods;
+    @ManyToOne
+    @JoinColumn(name = "bill_status_id")
+    private BillStatusEntity billStatusEntity;
+
+    @OneToMany(mappedBy = "billEntity")
+    List<BillFoodEntity> billFoodEntityList;
+
+    @OneToMany(mappedBy = "billEntity")
+    List<BillTicketEntity> billTicketEntityList;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public double getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(double totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public String getTradingCode() {
+        return tradingCode;
+    }
+
+    public void setTradingCode(String tradingCode) {
+        this.tradingCode = tradingCode;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+    public PromotionEntity getPromotionEntity() {
+        return promotionEntity;
+    }
+
+    public void setPromotionEntity(PromotionEntity promotionEntity) {
+        this.promotionEntity = promotionEntity;
+    }
+
+    public BillStatusEntity getBillStatusEntity() {
+        return billStatusEntity;
+    }
+
+    public void setBillStatusEntity(BillStatusEntity billStatusEntity) {
+        this.billStatusEntity = billStatusEntity;
+    }
+
+    public List<BillFoodEntity> getBillFoodEntityList() {
+        return billFoodEntityList;
+    }
+
+    public void setBillFoodEntityList(List<BillFoodEntity> billFoodEntityList) {
+        this.billFoodEntityList = billFoodEntityList;
+    }
+
+    public List<BillTicketEntity> getBillTicketEntityList() {
+        return billTicketEntityList;
+    }
+
+    public void setBillTicketEntityList(List<BillTicketEntity> billTicketEntityList) {
+        this.billTicketEntityList = billTicketEntityList;
+    }
+
+
 }

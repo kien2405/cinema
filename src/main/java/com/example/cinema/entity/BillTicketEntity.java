@@ -1,29 +1,54 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "BillTicket")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "bill_ticket")
 public class BillTicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Quantity")
-    Integer quantity;
-
-    @ManyToOne
-    @JoinColumn(name = "BillId")
-    BillEntity bill;
+    @Column(name = "quantity")
+    private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "TicketId")
-    TicketEntity ticket;
+    @JoinColumn(name = "bill_id")
+    private BillEntity billEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private TicketEntity ticketEntity;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public BillEntity getBillEntity() {
+        return billEntity;
+    }
+
+    public void setBillEntity(BillEntity billEntity) {
+        this.billEntity = billEntity;
+    }
+
+    public TicketEntity getTicketEntity() {
+        return ticketEntity;
+    }
+
+    public void setTicketEntity(TicketEntity ticketEntity) {
+        this.ticketEntity = ticketEntity;
+    }
 }

@@ -1,7 +1,6 @@
-package com.example.cinema.config;
+package com.example.ThucTapLTS.config;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
+import org.springframework.beans.PropertyAccessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,29 +10,27 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MailConfig {
     @Value("${mailServer.host}")
-    String host;
+    private String host;
 
     @Value("${mailServer.port}")
-    Integer port;
+    private int port;
 
     @Value("${mailServer.email}")
-    String email;
+    private String email;
 
     @Value("${mailServer.password}")
-    String password;
+    private String password;
 
     @Value("${mailServer.isSSL}")
-    String isSSL;
+    private String isSSL;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(host);
         mailSender.setPort(port);
-
         mailSender.setUsername(email);
         mailSender.setPassword(password);
         mailSender.setDefaultEncoding("UTF-8");
@@ -45,7 +42,6 @@ public class MailConfig {
         props.put("mail.smtp.ssl.enable", isSSL);
         props.put("mail.smtp.from", email);
         props.put("mail.debug", "true");
-
         return mailSender;
     }
 }

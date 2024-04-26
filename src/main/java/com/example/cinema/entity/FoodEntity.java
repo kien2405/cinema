@@ -1,38 +1,87 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 @Entity
-@Table(name = "Food")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "food")
 public class FoodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Price")
-    Double price;
+    @Column(name = "price")
+    private double price;
 
-    @Column(name = "Description")
-    String description;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "Image")
-    String image;
+    @Column(name = "image")
+    private String image;
 
-    @Column(name = "NameOfFood")
-    String nameOfFood;
+    @Column(name = "name_of_food")
+    private String nameOfFood;
 
-    @Column(name = "IsActive")
-    Boolean isActive;
+    @Column(name = "is_active")
+    private boolean isActive;
 
-    @OneToMany(mappedBy = "food", fetch = FetchType.LAZY)
-    List<BillFoodEntity> billFoods;
+    @OneToMany(mappedBy = "foodEntity")
+    List<BillFoodEntity> billFoodEntityList;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getNameOfFood() {
+        return nameOfFood;
+    }
+
+    public void setNameOfFood(String nameOfFood) {
+        this.nameOfFood = nameOfFood;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public List<BillFoodEntity> getBillFoodEntityList() {
+        return billFoodEntityList;
+    }
+
+    public void setBillFoodEntityList(List<BillFoodEntity> billFoodEntityList) {
+        this.billFoodEntityList = billFoodEntityList;
+    }
 }

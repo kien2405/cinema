@@ -1,27 +1,43 @@
-package com.example.cinema.entity;
+package com.example.ThucTapLTS.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
 @Entity
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "BillStatus")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "bill_status")
 public class BillStatusEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    @Column(name = "Name")
-    String name;
+    @Column(name = "name")
+    private String name;
 
-    @OneToMany(mappedBy = "billStatus", fetch = FetchType.LAZY)
-    List<BillEntity> bills;
+    @OneToMany(mappedBy = "billStatusEntity")
+    List<BillEntity> billEntityList;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<BillEntity> getBillEntityList() {
+        return billEntityList;
+    }
+
+    public void setBillEntityList(List<BillEntity> billEntityList) {
+        this.billEntityList = billEntityList;
+    }
 }
