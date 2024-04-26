@@ -1,3 +1,13 @@
-Đăng ký thông qua gmail
-Xác thực, phân quyền
-Thanh toán
+- Chức năng đăng ký, gửi mã hoặc link xác nhận về email, xác thực đăng ký tài khoản
+- Chức năng đăng nhập, sử dụng phương thức xác thực là JwtBearer
+- Chức năng đổi mật khẩu: người đổi mật khẩu phải là người đang trong phiên đăng nhập, chứ không được truyền vào userid trong controller
+- Hiển thị các bộ phim nổi bật(sắp xếp theo số lượng đặt vé)
+- Thêm, sửa, xóa Cinema(Admin)
+- Thêm, sửa, xóa Room(Admin)
+- Thêm, sửa, xóa Seat(Admin)
+- Thêm, sửa, xóa Food(Admin)
+- Hiển thị phim theo rạp, phòng, trạng thái ghế trong phòng
+- Thêm, sửa, xóa Movie
+- Thanh toán VNPAY
+- Thống kê doanh số của từng rạp theo khoảng thời gian
+- Thống kê đồ ăn bán chạy trong 7 ngày gần nhất
